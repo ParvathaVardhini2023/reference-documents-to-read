@@ -1,0 +1,26 @@
+Although most new capabilities and enhancements in Db2 12 are delivered in function levels. Some continue to be delivered in the base release. For highlighted examples of such enhancements, see What's new in the Db2 12 base release.
+The following function levels are available in Db2 12. They are listed in descending order, beginning with the highest available function level.
+
+Function level 506 (activation enabled by APAR PH16829—October, 2019)
+Function level 506 introduces support for new alternative names for existing built-in functions and support for implicitly dropping explicitly created table spaces.
+
+Function level 505 (activation enabled by APAR PH09191—June, 2019)
+Function level 505 introduces improved concurrency for rebind of executing packages, automatic page sample by default for RUNSTATS, improved DECFLOAT data type support, transparent encryption for data columns, and temporal and archive transparency for WHEN clauses on triggers.
+
+Function level 504 (activation enabled by APAR PH07672—April, 2019)
+Function level 504 introduces new support for data with IBM Z hardware-based Huffman compression of Db2 data, the ability to prevent the creation of certain new deprecated objects types, new support for certain built-in functions by pass-through to IBM Db2 Analytics Accelerator, and new SQL syntax alternatives for certain special registers and NULL predicates.
+
+Function level 503 (activation enabled by APAR PH00506—October, 2018)
+Function level 503 introduces support for IBM Db2 AI for z/OS, replication of system-period temporal tables and generated expression columns, a change to temporal auditing support for temporal data, and a new console message that indicates when catalog levels or function levels change.
+
+Function level 502 (activation enabled by APAR PI95511—May, 2018)
+Function level 502 introduces management of key labels for z/OS DFSMS data set encryption and explicit casting of numeric values to GRAPHIC or VARGRAPHIC.
+
+Function level 501 (activation enabled by APAR PI70535—May, 2017)
+Function level 501 introduces the LISTAGG built-in function, which produces a list of all values in a group.
+
+Function level 500 (activated at Db2 12 installation or after migration—October, 2016)
+In Db2 12, function level 500 (V12R1M500) represents the first opportunity for applications to take advantage of most new capabilities in the initial release, including new SQL capabilities and many new subsystem parameter settings. In many respects, function level 500 is analogous to new-function mode in previous releases.
+
+Function level 100 (activated by migration to Db2 12)
+In function level 100 (V12R1M100), Db2 runs on Db2 12 code, and virtual storage and optimization enhancements in the initial Db2 12 release become available. However, most new function and new SQL capabilities remain disabled. In many respects, function level 100 is analogous to conversion mode in previous Db2 releases.

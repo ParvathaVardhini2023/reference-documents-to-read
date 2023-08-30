@@ -1,0 +1,6 @@
+The resource limit facility can be used to limit CPU execution times and resource consumption by static SQL statements that are bound in packages.
+In previous versions of Db2, limits specified in the resource limit facility applied only to dynamic SQL statements.
+Db2 12 introduces the ability to specify reactive governing for static SQL statements by adding new rows in resource limit facility tables. Static SQL statements are governed by rows that specify the RLFFUNC='A' (for DSNRLSTxx tables) and RLFFUNC='B' (for DSNRLMTxx tables) values in the resource limit tables.
+You can use this function to cancel poorly performing SQL statements that consume too many resources, especially in high-volume OLTP environments.
+The value of the RLFENABLE subsystem parameter controls whether resource limits apply to dynamic SQL statements only, static SQL statements only, or to all SQL statements.
+You specify default resource limit actions for static SQL statements by setting the values of the RLFERRSTC (for local statements) and RLFERRDSTC (for remote statements) subsystem parameters.

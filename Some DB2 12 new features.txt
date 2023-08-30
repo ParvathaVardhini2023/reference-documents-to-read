@@ -1,0 +1,45 @@
+CATALOG TABLES AND THEIR HISTORY TABLES
+==========================================
+
+Db2 12 can use temporal versioning to record historical information for certain catalog tables. You can use the historical information to analyze, predict, and help prevent specific conditions in a subsystem.
+ (FL 500)  
+The following table lists the catalog tables that have an associated history table for system-period temporal versioning.
+
+
+Catalog table 				History table
+SYSINDEXSPACESTATS catalog table SYSIBM.SYSIXSPACESTATS_H
+SYSTABLESPACESTATS catalog table SYSIBM.SYSTABSPACESTATS_H
+
+The historical information for the real-time statistics catalog tables, SYSINDEXSPACESTATS and SYSTABLESPACESTATS, can be used to analyze the rate of change in size, organization, and activity for table space and index space partitions. This information can then be used to develop an automated response to conditions like table spaces and index spaces running out of space or becoming too disorganized.
+Enabling the temporal relationship
+
+The temporal relationship between a history table and its associated catalog table must be enabled before the history table can be used to record historical information. Each member Db2 externalizes rows whenever interval specified by the STATSINT subsystem parameter is reached.
+
+===================================================================================================
+
+Transfer ownership
+===================
+
+In Db2 12, you can transfer the ownership of database and system objects online if you are the owner of the object or have SECADM authority. You can use an SQL TRANSFER OWNERSHIP statement to transfer ownership of an object to an authorization ID or a role without any application change. You cannot transfer ownership for catalog and directory objects. 
+ 
+Db2 objects that can be transferred:
+Database
+Table space
+Table / Materialized Query Table (MQT)
+Index
+View
+Stogroup
+ 
+After a TRANSFER OWNERSHIP statement is processed, the current owner will no longer have any implicit privileges on the object and any cache dependencies are cleared. 
+======================================================================================================
+
+Trusted Context
+================
+
+The following client applications provide support for the trusted context:
+The Db2 Universal Java™ Driver introduces new APIs for establishing trusted connections and switching users of a trusted connection. 
+The Db2 CLI/ODBC Driver introduces new keywords for connecting APIs to establish trusted connections and switch users of a trusted connection. 
+The WebSphere® Application Server 6.0 exploits the trusted context support through its "propagate client identity" property.
+
+============================================================================================
+

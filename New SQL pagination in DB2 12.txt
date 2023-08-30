@@ -1,0 +1,31 @@
+New SQL pagination syntax - a Db2 12 greatest hit with John Campbell 
+Paul_McWilliams | May 21 2018 | Visits (7237) 
+ 
+By John Campbell and Paul McWilliams.
+This post is part of a series that provides John Campbell's perspective on some of the most popular new features and capabilities in Db2 12 for z/OS.
+ 
+One of the biggest challenges for application developers is writing good SQL for pagination—returning a portion of a result set based on data position—that performs well for both pseudo conversational transactions and also for batch programs, when starting from an intermediate commit point. Several possible solutions exist, ranging from the use of OR predicates to more complex approaches using multiple cursors. However, all were more or less difficult to understand and code, and the easier solutions to code tended to result in poorer performance.
+ 
+In Db2 10, we helped the situation from a performance perspective by transforming the SQL to use a new access type called range-list index scan. This enhancement allowed a set of ALL predicates to be processed as an index matching predicate, provided that the operands on all predicates were covered by the same index.
+ 
+Nevertheless, application developers still to had to write some ugly and cumbersome SQL code. The following example shows one existing solution, which uses separate = and > predicates on the same column and value ('JONES' in this example):
+    WHERE    (LASTNAME = ‘JONES’ AND FIRSTNAME > ‘WENDY’)
+                     OR (LASTNAME > JONES)
+
+In Db2 12, we've made life much easier for application developers. The new SQL pagination syntax is well-liked, it works well, and it should improve application developer productivity and also the robustness of the applications.
+ 
+The following example shows the first new syntax, which is called called data-dependent pagination syntax:
+    SELECT ... FROM ... WHERE (LASTNAME, FIRSTNAME) > (‘JONES’, ‘WENDY’)
+
+Given the correct index design, Db2 can go directly to the needed rows and it can exploit range-list index scan (ACCESSTYPE='NR'). This is the best from a performance perspective and this is the syntax that I strongly recommend.
+ 
+The following example shows new syntax for numeric-based pagination, which uses offset-clause and fetch-clause:
+    SELECT ... FROM ... OFFSET 10 ROWS FETCH FIRST 10 ROWS ONLY
+
+Here Db2 must skip through unneeded rows, and large interim result sets have a performance impact. Also, if rows are inserted or deleted from other application in between, you might see the same rows twice, or not see the rows at all. This syntax is most useful for mobile applications.
+Thanks to the new syntax, it might be possible to replace the use of static scrollable cursors by the SQL pagination in your applications, and gain the following benefits:
+Result sets are no longer materialized
+Read-only applications do not create long-running units of recovery
+Performance can be improved
+Generally, the two new SQL pagination syntax approached work very well, as advertised, and are well-liked by application developers.
+ 

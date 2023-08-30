@@ -1,0 +1,22 @@
+Enhanced SQL MERGE - a Db2 12 greatest hit with John Campbell 
+
+ 
+By John Campbell, Claire McFeely, and Jennie Chang.
+
+This post is part of a series that provides John Campbell's perspective on some of the most popular new features and capabilities in Db2 12 for z/OS.
+ 
+Back in Version 9, Db2 for z/OS introduced very simple and minimal support for the SQL MERGE statement, only providing an upsert capability with limited functionality. This feature restricted MERGE statements to only accept a single INSERT clause and UPDATE clause. Now, Db2 12 for z/OS enhances MERGE statements to be consistent with the SQL 2016 Core standard, as well as compatible with the Db2 family.
+This update introduces new functionality for MERGE statements so you can:
+Identify the source data as a table or view, or even with a fullselect, for greater flexibility.
+Specify optional predicates on WHEN clauses (which contain MATCHED and NOT MATCHED clauses) for finer control and granularity.
+Specify DELETE data modification operations (in addition to INSERT and UPDATE) for easier and more comprehensive data maintenance.
+Specify more WHEN clauses with optional search conditions to better identify source rows and intended data modification operations. However, each source row is processed by a single WHEN or ELSE clause.
+Specify a SIGNAL statement to indicate an error.
+Specify an IGNORE action to continue with MERGE statement processing without issuing an error.
+A highlight of these enhancements is that you can specify queries identifying the source rows for MERGE statements. The query can even be a join; however, this could cause the statement to return millions, or even billions, of rows and operations. When using such a powerful MERGE statement, keep in mind the following considerations:
+There are no intermediate commit points.
+If there is an error, it could take a considerable amount of time to rollback the statement.
+Lock escalation could readily occur, impacting concurrency.
+SQL pagination is not supported.
+You can use a NOT ATOMIC CONTINUE ON SQLEXCEPTION clause to run the statement without the Db2 12 enhancements.
+Nevertheless, these enhancements are an advantageous update, providing significant benefits for application developers. With the new functionality, MERGE statements can now be used to provide increased development productivity, improved performance, and easier application porting to Db2 12 for z/OS.
