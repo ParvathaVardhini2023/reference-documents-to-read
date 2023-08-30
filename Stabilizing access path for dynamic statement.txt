@@ -1,0 +1,34 @@
+You can stabilize the access paths for repeating cached dynamic SQL statements to gain performance stability characteristics similar to applications that use static SQL statements. 
+Before you begin
+Set the value of the CACHEDYN_STABILIZATION subsystem parameter to an appropriate value. For more information, see CACHE DYN STABILITY field (CACHEDYN_STABILIZATION subsystem parameter).
+Observe the dynamic statement cache to identify statements that are likely to be captured for stabilization, as described in Identifying dynamic SQL statements to stabilize.
+About this task
+When you stabilize dynamic SQL statements, Db2 stores current SQLID, statement text, and runtime structures for stabilized dynamic SQL statements in certain Db2 catalog tables. When a cache miss occurs for a stabilized dynamic SQL statement, Db2 loads the cache structures from the catalog instead of processing a full prepare for the statement.
+Procedure
+To stabilize access paths for dynamic SQL statements:
+ If you plan to specify a threshold value for capturing statements, activate the traces for IFCID 0316 and IFCID 0318. 
+For more information, see Controlling the collection of statistics for SQL statements.
+ 
+Issue START DYNQUERYCAPTURE commands. 
+You can capture a particular statement from the dynamic statement cache, capture an immediate snapshot of cached statements, or start ongoing monitoring of cached statements. 
+For example, you might issue the following statements: 
+Capture and stabilize a single statement
+-START DYNQUERYCAPTURE STBLGRP(APP1) STMTID(1253)
+
+The single statement with STMTID 1253 is captured and stabilized in the Db2 catalog in the APP1 stabilization group.
+Capture a snapshot of cached dynamic SQL statements
+-STA DYNQUERYCAPTURE STBLGRP(APP1) THRESHOLD(100) 
+CURSQLID(APP1ID) MONITOR (NO)
+
+All cached dynamic statements that were issued by APP1ID current SQL identifier more than 100 times, are stabilized in the APP1 stabilization group.
+Capture and monitor cached dynamic SQL statements
+-START DYNQUERYCAPTURE STBLGRP(APP1) THRESHOLD(100) 
+CURSQLID(APP1ID) MONITOR(YES)
+
+As before, all cached dynamic statements that were issued by APP1ID current SQL identifier more than 100 times, are captured and stabilized catalog in the APP1 stabilization group. However, ongoing monitoring also captures any statements that meet the same criteria while the capture remains active.
+
+What to do next
+Take any of the following actions:
+Issue DISPLAY DYNQUERYCAPTURE commands to identify dynamic SQL statements that are being monitored for stabilization.
+Issue STOP DYNQUERYCAPTURE commands to stop the monitoring and capture of dynamic SQL statements.
+Establish a process for checking for stabilized dynamic SQL statements that are no longer used. Then, issue FREE STABILIZED DYNAMIC QUERY commands reclaim the storage space used in the Db2catalog by such statements.

@@ -1,0 +1,17 @@
+The CACHEDYN_STABILIZATION subsystem parameter specifies whether dynamic SQL statements can be captured for stabilization and whether Db2 uses the captured run time structures to process stabilized dynamic SQL statements that are not present in the dynamic statement cache. Db2 avoids processing full prepares when it uses the captured run time structures.
+Db2 12 introduces this subsystem parameter. It takes effect only when the activated function level is function level 500 or higher.
+
+Data sharing scope:
+It is recommended that all members use the same setting
+
+Online changeable:
+Yes
+
+BOTH
+Dynamic SQL statements are captured to the catalog, and Db2 uses captures access paths for stabilized statements.
+CAPTURE
+Dynamic SQL statements can be captured to the catalog, but Db2 does not use any captured access paths.
+LOAD
+Db2 uses captured access paths for dynamic SQL statements, but statements cannot be captured for stabilization.
+NONE
+Dynamic statements cannot be captured and Db2 does not use any captured access paths.

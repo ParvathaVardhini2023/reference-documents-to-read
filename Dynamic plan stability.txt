@@ -1,0 +1,24 @@
+Dynamic plan stability - a Db2 12 greatest hit with John Campbell 
+Paul_McWilliams | June 5 2018 | Visits (6362) 
+ 
+By John Campbell and Paul McWilliams.
+This post is part of a series that provides John Campbell's perspective on some of the most popular new features and capabilities in Db2 12 for z/OS.
+ 
+Dynamic SQL statements are more susceptible to creating performance problems than static SQL. A full PREPARE occurs for every miss in the dynamic statement cache, and such SQL statements might go through query optimization several times per day. Whereas, with static SQL, the access paths are determined at bind time and the access path is stabilized and reused until the next BIND or REBIND operation. In the case of dynamic SQL, all it takes is a performance regression on a single high-volume SQL statement to result in a serious production performance problem.
+ 
+Dynamic plan stability is a welcome new feature to bring some relief in the area of performance management for dynamic SQL statements. The goal is to provide consistent and more reliable performance. The sweet spot for dynamic plan stability is short-running dynamic SQL statements that run hundreds or thousands of time per day. Dynamic plan stability helps greatly with high-turnover periods in the dynamic statement cache, such as after the planned or unplanned recycle of a Db2 subsystem, or when hundreds or thousands of SQL statements that are related to an object are invalidated in the dynamic statement cache as a result of that object being subject to a RUNSTATS operation.
+ 
+In Db2 11, a miss in the dynamic statement cache always requires a new full prepare, which is very CPU intensive and could possibly result in a bad access path. In Db2 12, you can stabilize SQL statements from the dynamic statement cache and the statements are persisted in the Db2 catalog. So, when there is a miss in the dynamic statement cache, no new full prepare is required. Rather, the previously prepared statement is loaded into the dynamic statement cache from the catalog. It also has the advantage that statements are invalidated by SQL DDL, just like static SQL packages.
+ 
+The CACHEDYN_STABILIZATION subsystem parameter controls the use of dynamic plan stability at the subsystem level. When dynamic plan stability is enabled, you can stabilize specific dynamic SQL statements, or you can stabilize a group of dynamic SQL statements that are executed more than a certain number of times.
+ 
+A change of application compatibility (APPLCOMPAT) level, or changes to special registers such as DEGREE, OPTHINT, and others, result in a cache miss. There is currently no REBIND capability to "repair" such statements after they have become invalidated. You must wait for new stabilization. However, you can use some new EXPLAIN sysntax to capture EXPLAIN information for the invalidated statements:
+    EXPLAIN STABILIZED DYNAMIC QUERY STMTID nnn COPY INVALID"
+
+Some restrictions exist in this first release of dynamic plan stability:
+The DISPLAY DYNQUERYCAPTURE command has only local scope
+Concentration of literal values is not supported
+Statements that query temporal tables or tables involved in a transparent archive relationship are not supported
+Also, stabilized dynamic SQL statement groups can contain many statements. So, if you do FREE STABILIZED DYNAMIC QUERY STBLGRP(x) to free off all statements in a dynamic SQL statement group, you are not only purging those statements from the catalog; you are also invalidating those statements in the dynamic statement cache, which can cause a storm of full prepare activity.
+
+Finally, stabilized dynamic SQL statements do consume more CPU than static SQL statements because a short PREPARE is still involved.

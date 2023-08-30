@@ -1,0 +1,13 @@
+Various actions and events can invalidate stabilized dynamic SQL statements.
+
+For example, changing objects that are referenced by the statement, such by issuing ALTER, REVOKE, and DROP statements can invalidate stabilized dynamic SQL statements.
+
+When these situations occur, Db2 marks the corresponding SYSDYNQRY row for the stabilized access path as invalid. 
+
+The next time an invalidated statement is prepared, Db2 uses the full prepare process to generate new access paths. 
+
+Invalidated statements are not stabilized until another START DYNQUERYCAPTURE command is issued to stabilize them again.
+
+The VALID column of the SYSDYNQRY catalog table indicates the validity of stabilized dynamic statements. 
+
+The COPYID=0 indicates the valid copy, and COPYID=4 indicates the invalidated copy.
